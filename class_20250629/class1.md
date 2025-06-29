@@ -128,3 +128,6 @@ This is usually very incorrect and in theory, shouldn't work. In practice though
 ## Project Work
 
 Work on Baby Name Classifier Project
+
+## EXTRA: Email Spam Classifier using Naive Bayes
+https://github.com/ivedants/Naive-Bayes-Spam-Email-Classifier
