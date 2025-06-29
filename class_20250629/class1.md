@@ -109,6 +109,8 @@ Both approaches can solve the classification problem, but the generative model g
 ## Math Review: Bayes's Theorem
 On Board - Refer to Wikipedia
 
+## Break
+
 ## The 'Naive' Assumption
 
 Sometimes, the context around a given target event that you wish to model is complicated and has many interconnected parts.
@@ -118,3 +120,11 @@ For example, when using the text of an email to decide whether an email is spam 
 However, we often don't know these inter-relationships or modeling them is difficult. So, in practice, we might just want to say that they are all independent and unrelated. Then, we can use the rule for multiplying probabilities to turn a collection of complicated conditions into an easy product of simpler conditions!
 
 This is usually very incorrect and in theory, shouldn't work. In practice though, it actually works pretty well for many scenarios.
+
+## The Naive Bayes Model
+
+![Naive Bayes Model](https://www.machinelearningplus.com/wp-content/uploads/2018/11/03_bayes_rule_naive_bayes_new.png)
+
+## Project Work
+
+Work on Baby Name Classifier Project
