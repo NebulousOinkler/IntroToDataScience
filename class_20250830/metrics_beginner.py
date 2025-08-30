@@ -68,7 +68,7 @@ def precision(tp, fp):
     """
     if tp + fp == 0:
         return 0.0
-    return tp / (tp + fp)
+    return ... # FILL IN
 
 # Recall (True Positive Rate): the proportion of actual positives that are correctly identified
 def recall(tp, fn):
@@ -81,7 +81,7 @@ def recall(tp, fn):
     """
     if tp + fn == 0:
         return 0.0
-    return tp / (tp + fn)
+    return ... # FILL IN
 
 # Accuracy: the proportion of total correct predictions
 def accuracy(tp, tn, total_instances):
@@ -93,7 +93,7 @@ def accuracy(tp, tn, total_instances):
     :param total_instances: Total number of instances
     :return: Accuracy score
     """
-    return (tp + tn) / total_instances
+    return ... # FILL IN
 
 # Specificity: the proportion of actual negatives correctly identified
 def specificity(tn, fp):
@@ -106,7 +106,7 @@ def specificity(tn, fp):
     """
     if tn + fp == 0:
         return 0.0
-    return tn / (tn + fp)
+    return ... # FILL IN
 
 # F1 Score: the harmonic mean of precision and recall
 def f1_score(precision, recall):
@@ -119,7 +119,7 @@ def f1_score(precision, recall):
     """
     if precision + recall == 0:
         return 0.0
-    return 2 / ((1 / precision) + (1 / recall))
+    return ... # FILL IN
 
 # ROC curve and AUC calculation
 def roc_curve_and_auc(y_true, y_scores):
@@ -227,7 +227,6 @@ if __name__ == "__main__":
 
     # Clean the data
     df_cleaned = clean_data(df)
-    pretty_print_df(df_cleaned)
     # Now we simulate more realistic predictions
     # Simulating predicted probabilities based on 'Glucose_Level' and other features
     # Assume that higher glucose levels correlate with a higher likelihood of having the disease
