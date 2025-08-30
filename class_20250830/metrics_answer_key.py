@@ -210,14 +210,47 @@ if __name__ == "__main__":
     glucose_levels = np.random.randint(70, 200, size=num_samples)  # Random glucose levels
     has_disease = np.random.choice([0, 1], size=num_samples)  # Random disease label: 1 = Has diabetes, 0 = No diabetes
 
-    # Create DataFrame from the generated data
+        # Create DataFrame from the generated data
     df = pd.DataFrame({
         'Patient_ID': patient_ids,
         'Age': ages,
         'Gender': genders,
         'Glucose_Level': glucose_levels,
-        'Has_Disease': has_disease})
-    
+        'Has_Disease': has_disease
+    })
+
+    # Pretty-print the raw data before processing
     pretty_print_df(df)
 
-    # Use the above metric functions to compute
+    # Clean the data
+    df_cleaned = clean_data(df)
+
+    # Now we simulate more realistic predictions
+    # Simulating predicted probabilities based on 'Glucose_Level' and other features
+    # Assume that higher glucose levels correlate with a higher likelihood of having the disease
+    glucose_scores = df_cleaned['Glucose_Level'].values
+    # Simulating probabilities: Higher glucose levels increase probability of disease (logistic-like model)
+    predicted_probabilities = np.clip(1 / (1 + np.exp(-0.05 * (glucose_scores - 100))), 0, 1)
+
+    # TODO. Make a new model and try to get better results! 
+
+
+    # Threshold to convert probabilities to binary predictions (0 or 1)
+    y_pred = (predicted_probabilities >= 0.5).astype(int)  # Using 0.5 as the threshold
+
+    # True labels
+    y_true = df['Has_Disease'].values
+
+    # Calculate confusion matrix and metrics
+    tp, fp, tn, fn = calculate_confusion_matrix(y_true, y_pred)
+    precision_value = precision(tp, fp)
+    recall_value = recall(tp, fn)
+    accuracy_value = accuracy(tp, tn, len(y_true))
+    specificity_value = specificity(tn, fp)
+    f1_value = f1_score(precision_value, recall_value)
+
+    # Calculate AUC (using simulated predicted probabilities)
+    fpr, tpr, auc_value = roc_curve_and_auc(y_true, predicted_probabilities)
+
+    # Pretty-print the metrics results after model evaluation
+    pretty_print_metrics(precision_value, recall_value, accuracy_value, specificity_value, f1_value, auc_value)
