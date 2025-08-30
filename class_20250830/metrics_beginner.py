@@ -20,18 +20,21 @@ def clean_data(df):
     :return: Cleaned pandas DataFrame
     """
     
+    df_cleaned = df.copy()
+    
     # 1. Handle Missing Values (Imputation)
     # We'll use SimpleImputer to fill missing values. For numerical columns, we use mean imputation.
+    numeric_cols = df_cleaned.select_dtypes(include=np.number).columns
     imputer = SimpleImputer(strategy='mean')
-    df_cleaned = pd.DataFrame(imputer.fit_transform(df.select_dtypes(include=[np.number])))
+    df_cleaned[numeric_cols] = imputer.fit_transform(df_cleaned[numeric_cols])
     
     # 2. Encode Categorical Features (if any)
     # Example: If the dataset contains a 'Gender' column (categorical), we'll encode it
-    categorical_columns = df.select_dtypes(include=['object']).columns
+    categorical_columns = df_cleaned.select_dtypes(include=['object']).columns
     label_encoder = LabelEncoder()
     
     for col in categorical_columns:
-        df_cleaned[col] = label_encoder.fit_transform(df[col])
+        df_cleaned[col] = label_encoder.fit_transform(df_cleaned[col])
     
     # If there are any non-numeric columns that aren't relevant for the model, drop them
     # Example: Drop patient IDs or other columns not used for the prediction task
@@ -49,8 +52,8 @@ def calculate_confusion_matrix(y_true, y_pred):
     :return: Confusion matrix (TP, FP, TN, FN)
     """
     tp = sum((yt == 1 and yp == 1) for yt, yp in zip(y_true, y_pred))
-    fp = ... # FILL IN
-    tn = ... # FILL IN
+    fp = sum((yt == 0 and yp == 1) for yt, yp in zip(y_true, y_pred))
+    tn = sum((yt == 0 and yp == 0) for yt, yp in zip(y_true, y_pred))
     fn = sum((yt == 1 and yp == 0) for yt, yp in zip(y_true, y_pred))
     return tp, fp, tn, fn
 
@@ -65,7 +68,7 @@ def precision(tp, fp):
     """
     if tp + fp == 0:
         return 0.0
-    return ... # FILL IN
+    return tp / (tp + fp)
 
 # Recall (True Positive Rate): the proportion of actual positives that are correctly identified
 def recall(tp, fn):
@@ -78,7 +81,7 @@ def recall(tp, fn):
     """
     if tp + fn == 0:
         return 0.0
-    return ... # FILL IN
+    return tp / (tp + fn)
 
 # Accuracy: the proportion of total correct predictions
 def accuracy(tp, tn, total_instances):
@@ -90,7 +93,7 @@ def accuracy(tp, tn, total_instances):
     :param total_instances: Total number of instances
     :return: Accuracy score
     """
-    return ... # FILL IN
+    return (tp + tn) / total_instances
 
 # Specificity: the proportion of actual negatives correctly identified
 def specificity(tn, fp):
@@ -103,7 +106,7 @@ def specificity(tn, fp):
     """
     if tn + fp == 0:
         return 0.0
-    return ... # FILL IN
+    return tn / (tn + fp)
 
 # F1 Score: the harmonic mean of precision and recall
 def f1_score(precision, recall):
@@ -116,7 +119,7 @@ def f1_score(precision, recall):
     """
     if precision + recall == 0:
         return 0.0
-    return ... # FILL IN
+    return 2 / ((1 / precision) + (1 / recall))
 
 # ROC curve and AUC calculation
 def roc_curve_and_auc(y_true, y_scores):
@@ -146,7 +149,7 @@ def roc_curve_and_auc(y_true, y_scores):
         fpr.append(fp / (fp + tn))  # FPR = FP / (FP + TN)
 
     # Calculate AUC using the trapezoidal rule
-    auc_score = np.trapz(tpr, fpr)  # Numerical integration using numpy.trapz()
+    auc_score = np.trapezoid(tpr, fpr)  # Numerical integration using numpy.trapz()
 
     # Plotting the ROC curve
     plt.figure()
@@ -170,7 +173,7 @@ def auc_score(fpr, tpr):
     :param tpr: True Positive Rates from ROC curve
     :return: AUC score
     """
-    return np.trapz(tpr, fpr)
+    return np.trapezoid(tpr, fpr)
 
 # Pretty print the DataFrame for initial view
 def pretty_print_df(df):
@@ -224,7 +227,7 @@ if __name__ == "__main__":
 
     # Clean the data
     df_cleaned = clean_data(df)
-
+    pretty_print_df(df_cleaned)
     # Now we simulate more realistic predictions
     # Simulating predicted probabilities based on 'Glucose_Level' and other features
     # Assume that higher glucose levels correlate with a higher likelihood of having the disease
